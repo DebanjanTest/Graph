@@ -60,20 +60,41 @@ export const D3Graph: React.FC<D3GraphProps> = ({ searchTerm = '', onNodeSelect,
       return;
     }
 
-    const relevantNodes = data.nodes.filter(n => {
-      if (n.id === 'India') return true;
-      if (n.type === 'country') return true; // Keep countries to show relationships
-      if (n.type === 'domain' && n.id === filterDomain) return true;
-      if (n.type === 'metric' && (n as any).domain === filterDomain) return true;
-      return false;
-    });
+    // 1. Identify the domain node and its metrics
+    const domainNode = data.nodes.find(n => n.type === 'domain' && n.id === filterDomain);
+    const metricsInDomain = data.nodes.filter(n => n.type === 'metric' && (n as any).domain === filterDomain);
+    const metricIds = new Set(metricsInDomain.map(m => m.id));
 
-    const nodeIds = new Set(relevantNodes.map(n => n.id));
+    // 2. Find links connected to the domain or its metrics
     const relevantLinks = data.links.filter(l => {
       const sourceId = (l.source as any).id || (l.source as string);
       const targetId = (l.target as any).id || (l.target as string);
-      return nodeIds.has(sourceId) && nodeIds.has(targetId);
+      
+      // Link between domain and metric
+      if (sourceId === filterDomain && metricIds.has(targetId)) return true;
+      // Link between country and metric in this domain
+      if (metricIds.has(sourceId) || metricIds.has(targetId)) return true;
+      // Link involving India
+      if (sourceId === 'India' || targetId === 'India') {
+        // Only if the other side is relevant to this domain
+        if (metricIds.has(sourceId) || metricIds.has(targetId) || sourceId === filterDomain || targetId === filterDomain) return true;
+      }
+      
+      return false;
     });
+
+    // 3. Collect all nodes involved in these links
+    const nodeIds = new Set<string>();
+    relevantLinks.forEach(l => {
+      nodeIds.add((l.source as any).id || (l.source as string));
+      nodeIds.add((l.target as any).id || (l.target as string));
+    });
+
+    // Always include India and the Domain node if they exist
+    nodeIds.add('India');
+    if (domainNode) nodeIds.add(domainNode.id);
+
+    const relevantNodes = data.nodes.filter(n => nodeIds.has(n.id));
 
     setFilteredData({ nodes: relevantNodes, links: relevantLinks });
   }, [data, filterDomain]);
@@ -419,7 +440,12 @@ export const D3Graph: React.FC<D3GraphProps> = ({ searchTerm = '', onNodeSelect,
                       <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                         <div className="flex items-center gap-3">
                           <div className="w-2 h-6 bg-[#FF9933] rounded-full" />
-                          <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">{domain.id}</h3>
+                          <div>
+                            <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">{domain.id}</h3>
+                            {domain.metadata?.description && (
+                              <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{domain.metadata.description}</p>
+                            )}
+                          </div>
                         </div>
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{relatedMetrics.length} Active Indicators</span>
                       </div>

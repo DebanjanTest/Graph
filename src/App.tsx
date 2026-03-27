@@ -209,17 +209,33 @@ export default function App() {
         <aside className="w-96 bg-white border-r border-slate-200 flex flex-col overflow-hidden hidden xl:flex z-20 shadow-sm">
           <div className="p-6 border-b border-slate-100 bg-slate-50/50">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[11px] font-bold text-[#000080] uppercase tracking-wider">Bilateral Comparison</h2>
-              <div className="px-2 py-0.5 rounded bg-[#000080]/5 border border-[#000080]/10 text-[9px] font-bold text-[#000080] uppercase">Strategic</div>
+              <h2 className="text-[11px] font-bold text-[#000080] uppercase tracking-wider">Strategic Intelligence</h2>
+              <div className="flex items-center gap-2">
+                <div className={`px-2 py-0.5 rounded border text-[9px] font-bold uppercase ${
+                  filterDomain === 'All' ? 'bg-slate-100 border-slate-200 text-slate-500' : 'bg-[#000080]/5 border-[#000080]/10 text-[#000080]'
+                }`}>
+                  {filterDomain === 'All' ? 'Global' : filterDomain}
+                </div>
+              </div>
             </div>
-            {selectedNode && comparison ? (
+            {selectedNode ? (
               <div className="space-y-4">
-                <TugOfWar data={comparison} targetCountry={selectedNode.id} />
-                <div className="h-32 w-full bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
-                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-2">Historical Performance Index</p>
+                {comparison && <TugOfWar data={comparison} targetCountry={selectedNode.id} />}
+                <div className="h-40 w-full bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Historical Performance Index</p>
+                    <span className="text-[9px] font-bold text-[#000080] uppercase">{selectedNode.id}</span>
+                  </div>
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={timeSeries?.history || []}>
-                      <Line type="monotone" dataKey="rank" stroke="#000080" strokeWidth={2} dot={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                      <XAxis dataKey="date" hide />
+                      <YAxis hide domain={['auto', 'auto']} />
+                      <Tooltip 
+                        contentStyle={{ fontSize: '10px', borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                        labelStyle={{ fontWeight: 'bold' }}
+                      />
+                      <Line type="monotone" dataKey="value" stroke="#000080" strokeWidth={2.5} dot={{ r: 2, fill: '#000080' }} activeDot={{ r: 4 }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -227,8 +243,8 @@ export default function App() {
             ) : (
               <div className="h-48 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl text-center p-6 bg-slate-50/50">
                 <Globe size={32} className="text-slate-300 mb-3" />
-                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Select Country Node</p>
-                <p className="text-[10px] text-slate-400 mt-1">Select a node from the graph to view comparative intelligence</p>
+                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Select Intelligence Node</p>
+                <p className="text-[10px] text-slate-400 mt-1">Select any node from the graph to view historical performance and comparative data</p>
               </div>
             )}
           </div>
@@ -238,11 +254,17 @@ export default function App() {
             <div className="grid grid-cols-2 gap-3">
               {filterDomain === 'All' || filterDomain === 'Finance' ? (
                 <>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-[#138808]/30 transition-all group">
+                  <div 
+                    onClick={() => setSelectedNode({ id: 'GDP Growth', type: 'metric', metadata: { value: '7.2', unit: '%', trend: 'up' } } as any)}
+                    className={`p-3 rounded-xl border transition-all group cursor-pointer ${selectedNode?.id === 'GDP Growth' ? 'border-[#138808] bg-[#138808]/5 shadow-sm' : 'bg-slate-50 border-slate-200 hover:border-[#138808]/30'}`}
+                  >
                     <div className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">GDP Growth</div>
                     <div className="text-xl font-bold text-[#138808]">7.2%</div>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-[#000080]/30 transition-all group">
+                  <div 
+                    onClick={() => setSelectedNode({ id: 'Forex Reserves', type: 'metric', metadata: { value: '640.2', unit: 'B', trend: 'up' } } as any)}
+                    className={`p-3 rounded-xl border transition-all group cursor-pointer ${selectedNode?.id === 'Forex Reserves' ? 'border-[#000080] bg-[#000080]/5 shadow-sm' : 'bg-slate-50 border-slate-200 hover:border-[#000080]/30'}`}
+                  >
                     <div className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Forex Reserves</div>
                     <div className="text-xl font-bold text-[#000080]">$640.2B</div>
                   </div>
@@ -258,7 +280,10 @@ export default function App() {
               ) : null}
               {filterDomain === 'Tech' ? (
                 <>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-[#FF9933]/30 transition-all group">
+                  <div 
+                    onClick={() => setSelectedNode({ id: 'Innovation Index', type: 'metric', metadata: { value: '84.2', unit: '', trend: 'up' } } as any)}
+                    className={`p-3 rounded-xl border transition-all group cursor-pointer ${selectedNode?.id === 'Innovation Index' ? 'border-[#FF9933] bg-[#FF9933]/5 shadow-sm' : 'bg-slate-50 border-slate-200 hover:border-[#FF9933]/30'}`}
+                  >
                     <div className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Innovation Index</div>
                     <div className="text-xl font-bold text-[#FF9933]">84.2</div>
                   </div>
@@ -278,7 +303,10 @@ export default function App() {
               ) : null}
               {filterDomain === 'Energy' ? (
                 <>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-[#138808]/30 transition-all group">
+                  <div 
+                    onClick={() => setSelectedNode({ id: 'Renewable Cap', type: 'metric', metadata: { value: '180.5', unit: 'GW', trend: 'up' } } as any)}
+                    className={`p-3 rounded-xl border transition-all group cursor-pointer ${selectedNode?.id === 'Renewable Cap' ? 'border-[#138808] bg-[#138808]/5 shadow-sm' : 'bg-slate-50 border-slate-200 hover:border-[#138808]/30'}`}
+                  >
                     <div className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Renewable Cap</div>
                     <div className="text-xl font-bold text-[#138808]">180.5 GW</div>
                   </div>
@@ -298,7 +326,10 @@ export default function App() {
               ) : null}
               {filterDomain === 'Trade' ? (
                 <>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-[#FF9933]/30 transition-all group">
+                  <div 
+                    onClick={() => setSelectedNode({ id: 'Trade Balance', type: 'metric', metadata: { value: '-20.5', unit: 'B', trend: 'down' } } as any)}
+                    className={`p-3 rounded-xl border transition-all group cursor-pointer ${selectedNode?.id === 'Trade Balance' ? 'border-[#FF9933] bg-[#FF9933]/5 shadow-sm' : 'bg-slate-50 border-slate-200 hover:border-[#FF9933]/30'}`}
+                  >
                     <div className="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Trade Balance</div>
                     <div className="text-xl font-bold text-[#FF9933]">-$20.5B</div>
                   </div>

@@ -41,13 +41,26 @@ async function startServer() {
   const getTimeSeries = (nodeId: string) => {
     const history = [];
     const now = new Date();
+    
+    // Seed based on nodeId for consistent-ish random data
+    let seed = 0;
+    for (let i = 0; i < nodeId.length; i++) seed += nodeId.charCodeAt(i);
+    
+    let baseValue = 50 + (seed % 40); // Base value between 50 and 90
+    
     for (let i = 12; i >= 0; i--) {
       const d = new Date();
       d.setMonth(now.getMonth() - i);
+      
+      // Add some volatility and a slight upward trend for India
+      const volatility = (Math.random() - 0.45) * 5; 
+      const trend = nodeId === 'India' ? (12 - i) * 0.5 : 0;
+      baseValue = Math.max(10, Math.min(100, baseValue + volatility + trend));
+
       history.push({
         date: d.toISOString().split('T')[0],
-        rank: Math.floor(Math.random() * 10) + 1,
-        value: Math.floor(Math.random() * 1000) + 500
+        rank: Math.floor(Math.random() * 5) + 1, // Rank 1-5
+        value: parseFloat(baseValue.toFixed(2))
       });
     }
     return { nodeId, history };
