@@ -5,6 +5,19 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+:root {
+  --gov-saffron: #FF9933;
+  --gov-white: #FFFFFF;
+  --gov-green: #138808;
+  --gov-navy: #000080;
+}
+
+.tricolor-strip {
+  background: linear-gradient(to right, var(--gov-saffron) 33.33%, var(--gov-white) 33.33%, var(--gov-white) 66.66%, var(--gov-green) 66.66%);
+  height: 4px;
+  width: 100%;
+}
+
 body {
-  @apply font-sans antialiased;
+  @apply font-sans antialiased bg-slate-50;
 }

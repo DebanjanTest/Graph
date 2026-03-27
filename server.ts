@@ -69,6 +69,11 @@ async function startServer() {
           { id: "China", type: "country", metadata: { description: "Manufacturing hub, massive trade surplus.", region: "East Asia", gdp: "17.7T", growth: "5.0%", inflation: "0.7%", forex: "3.2T", tech_index: "Elite", energy_mix: "Coal/Renewables", trade_balance: "+80B" } },
           { id: "Germany", type: "country", metadata: { description: "Europe's industrial powerhouse.", region: "Europe", gdp: "4.4T", growth: "0.3%", inflation: "2.5%", forex: "300B", tech_index: "High", energy_mix: "Renewables/Gas", trade_balance: "+20B" } },
           { id: "Japan", type: "country", metadata: { description: "Advanced tech, high debt-to-GDP.", region: "East Asia", gdp: "4.2T", growth: "1.0%", inflation: "2.2%", forex: "1.2T", tech_index: "High", energy_mix: "Nuclear/Gas", trade_balance: "+5B" } },
+          { id: "UK", type: "country", metadata: { description: "Global financial hub.", region: "Europe", gdp: "3.1T", growth: "0.5%", inflation: "3.4%", forex: "180B", tech_index: "High", energy_mix: "Gas/Wind", trade_balance: "-15B" } },
+          { id: "France", type: "country", metadata: { description: "Nuclear energy leader in Europe.", region: "Europe", gdp: "2.9T", growth: "0.7%", inflation: "2.9%", forex: "240B", tech_index: "High", energy_mix: "Nuclear/Renewables", trade_balance: "-10B" } },
+          { id: "Russia", type: "country", metadata: { description: "Major energy exporter.", region: "Eurasia", gdp: "2.0T", growth: "1.5%", inflation: "7.4%", forex: "580B", tech_index: "Moderate", energy_mix: "Gas/Oil", trade_balance: "+40B" } },
+          { id: "UAE", type: "country", metadata: { description: "Strategic trade and energy hub.", region: "Middle East", gdp: "0.5T", growth: "3.5%", inflation: "2.1%", forex: "150B", tech_index: "High", energy_mix: "Oil/Solar", trade_balance: "+30B" } },
+          { id: "Saudi Arabia", type: "country", metadata: { description: "Largest oil exporter.", region: "Middle East", gdp: "1.1T", growth: "0.8%", inflation: "1.6%", forex: "450B", tech_index: "Moderate", energy_mix: "Oil/Gas", trade_balance: "+50B" } },
           
           // Domains
           { id: "Finance", type: "domain", metadata: { description: "Banking, reserves, and capital markets." } },
@@ -77,31 +82,37 @@ async function startServer() {
           { id: "Tech", type: "domain", metadata: { description: "Semiconductors, AI, and digital infrastructure." } },
 
           // Detailed Metrics
-          { id: "Forex Reserves", type: "metric", domain: "Finance", metadata: { india_val: "640B", china_val: "3.2T", japan_val: "1.2T", why: "Strategic buffer against external shocks." } },
-          { id: "GDP Growth", type: "metric", domain: "Finance", metadata: { india_val: "7.2%", usa_val: "2.1%", china_val: "5.0%", why: "Economic expansion rate." } },
-          { id: "Inflation", type: "metric", domain: "Finance", metadata: { india_val: "4.8%", usa_val: "3.2%", germany_val: "2.5%", why: "Purchasing power stability." } },
-          { id: "Interest Rates", type: "metric", domain: "Finance", metadata: { india_repo: "6.5%", usa_fed: "5.25%", why: "Cost of borrowing and liquidity control." } },
-          { id: "Debt to GDP", type: "metric", domain: "Finance", metadata: { india_ratio: "81%", japan_ratio: "260%", usa_ratio: "120%", why: "Fiscal health indicator." } },
-          { id: "Stock Market Cap", type: "metric", domain: "Finance", metadata: { india_val: "4.5T", usa_val: "50T", why: "Equity market depth." } },
+          { id: "Forex Reserves", type: "metric", domain: "Finance", metadata: { value: "640.2", unit: "B", trend: "up", description: "Strategic buffer against external shocks." } },
+          { id: "GDP Growth", type: "metric", domain: "Finance", metadata: { value: "7.2", unit: "%", trend: "up", description: "Economic expansion rate." } },
+          { id: "Inflation", type: "metric", domain: "Finance", metadata: { value: "4.8", unit: "%", trend: "down", description: "Purchasing power stability." } },
+          { id: "Interest Rates", type: "metric", domain: "Finance", metadata: { value: "6.5", unit: "%", trend: "stable", description: "Cost of borrowing and liquidity control." } },
+          { id: "Debt to GDP", type: "metric", domain: "Finance", metadata: { value: "81.2", unit: "%", trend: "down", description: "Fiscal health indicator." } },
+          { id: "Stock Market Cap", type: "metric", domain: "Finance", metadata: { value: "4.5", unit: "T", trend: "up", description: "Equity market depth." } },
+          { id: "Capital Adequacy", type: "metric", domain: "Finance", metadata: { value: "16.1", unit: "%", trend: "up", description: "Banking sector resilience." } },
+          { id: "Fiscal Deficit", type: "metric", domain: "Finance", metadata: { value: "5.8", unit: "%", trend: "down", description: "Government spending gap." } },
           
-          { id: "Semiconductors", type: "metric", domain: "Tech", metadata: { leader: "Taiwan/USA", india_focus: "Assembly/Design", why: "Critical for modern electronics and AI." } },
-          { id: "AI Research", type: "metric", domain: "Tech", metadata: { leader: "USA/China", india_growth: "Exponential", patents_2024: "1200", why: "Future of productivity and defense." } },
-          { id: "Digital Stack", type: "metric", domain: "Tech", metadata: { india_adoption: "90%", upi_volume: "12B/mo", why: "UPI/Aadhaar driving financial inclusion." } },
-          { id: "Cyber Security", type: "metric", domain: "Tech", metadata: { global_threat_level: "High", india_readiness: "Moderate", why: "Protecting digital infrastructure." } },
+          { id: "Semiconductors", type: "metric", domain: "Tech", metadata: { value: "12.5", unit: "B", trend: "up", description: "Critical for modern electronics and AI." } },
+          { id: "AI Research", type: "metric", domain: "Tech", metadata: { value: "1200", unit: "Pats", trend: "up", description: "Future of productivity and defense." } },
+          { id: "Digital Stack", type: "metric", domain: "Tech", metadata: { value: "90", unit: "%", trend: "up", description: "UPI/Aadhaar driving financial inclusion." } },
+          { id: "Cyber Security", type: "metric", domain: "Tech", metadata: { value: "82", unit: "Idx", trend: "up", description: "Protecting digital infrastructure." } },
+          { id: "5G Adoption", type: "metric", domain: "Tech", metadata: { value: "450", unit: "Cities", trend: "up", description: "Next-gen connectivity rollout." } },
+          { id: "SaaS Exports", type: "metric", domain: "Tech", metadata: { value: "32", unit: "B", trend: "up", description: "Software as a Service global reach." } },
 
-          { id: "Renewable Capacity", type: "metric", domain: "Energy", metadata: { india_val: "180GW", china_val: "1200GW", usa_val: "450GW", germany_val: "150GW", why: "Energy transition and sustainability." } },
-          { id: "Oil Reliance", type: "metric", domain: "Energy", metadata: { india_imports: "85%", usa_exporter: "Yes", china_imports: "70%", why: "Energy security vulnerability." } },
-          { id: "Nuclear Power", type: "metric", domain: "Energy", metadata: { france_leader: "Yes", japan_restart: "Ongoing", usa_capacity: "95GW", why: "Baseload clean energy." } },
-          { id: "Green Hydrogen", type: "metric", domain: "Energy", metadata: { india_mission: "5MMT", eu_target: "10MMT", why: "Decarbonizing heavy industry." } },
-          { id: "Grid Stability", type: "metric", domain: "Energy", metadata: { status: "Critical", why: "Integration of intermittent renewables." } },
+          { id: "Renewable Capacity", type: "metric", domain: "Energy", metadata: { value: "180.5", unit: "GW", trend: "up", description: "Energy transition and sustainability." } },
+          { id: "Oil Reliance", type: "metric", domain: "Energy", metadata: { value: "85", unit: "%", trend: "down", description: "Energy security vulnerability." } },
+          { id: "Nuclear Power", type: "metric", domain: "Energy", metadata: { value: "6.7", unit: "GW", trend: "up", description: "Baseload clean energy." } },
+          { id: "Green Hydrogen", type: "metric", domain: "Energy", metadata: { value: "5.0", unit: "MMT", trend: "up", description: "Decarbonizing heavy industry." } },
+          { id: "Grid Stability", type: "metric", domain: "Energy", metadata: { value: "94", unit: "%", trend: "up", description: "Integration of intermittent renewables." } },
+          { id: "Solar Efficiency", type: "metric", domain: "Energy", metadata: { value: "22.5", unit: "%", trend: "up", description: "Photovoltaic conversion rate." } },
 
-          { id: "Trade Balance", type: "metric", domain: "Trade", metadata: { china_surplus: "High", india_deficit: "Moderate", usa_deficit: "High", why: "Net export/import position." } },
-          { id: "FDI Inflow", type: "metric", domain: "Trade", metadata: { india_val: "71B", target: "100B", china_val: "180B", why: "Attraction of global manufacturing." } },
-          { id: "Supply Chain", type: "metric", domain: "Trade", metadata: { resilience: "Critical", china_plus_one: "Active", why: "Diversification away from single-source reliance." } },
-          { id: "Tariff Rates", type: "metric", domain: "Trade", metadata: { global_avg: "9%", india_avg: "14%", why: "Protectionism vs Free Trade." } },
-          { id: "Logistics Index", type: "metric", domain: "Trade", metadata: { india_rank: "38", singapore_rank: "1", why: "Efficiency of goods movement." } },
-          { id: "Export Volume", type: "metric", domain: "Trade", metadata: { india_target: "2T", current: "770B", why: "Global market share." } },
-          { id: "Trade Corridors", type: "metric", domain: "Trade", metadata: { imec: "Proposed", why: "Strategic connectivity routes." } }
+          { id: "Trade Balance", type: "metric", domain: "Trade", metadata: { value: "-20.5", unit: "B", trend: "up", description: "Net export/import position." } },
+          { id: "FDI Inflow", type: "metric", domain: "Trade", metadata: { value: "71.4", unit: "B", trend: "up", description: "Attraction of global manufacturing." } },
+          { id: "Supply Chain", type: "metric", domain: "Trade", metadata: { value: "76", unit: "Idx", trend: "up", description: "Diversification away from single-source reliance." } },
+          { id: "Tariff Rates", type: "metric", domain: "Trade", metadata: { value: "14.2", unit: "%", trend: "down", description: "Protectionism vs Free Trade." } },
+          { id: "Logistics Index", type: "metric", domain: "Trade", metadata: { value: "38", unit: "Rnk", trend: "up", description: "Efficiency of goods movement." } },
+          { id: "Export Volume", type: "metric", domain: "Trade", metadata: { value: "770.2", unit: "B", trend: "up", description: "Global market share." } },
+          { id: "Trade Corridors", type: "metric", domain: "Trade", metadata: { value: "4", unit: "Active", trend: "up", description: "Strategic connectivity routes." } },
+          { id: "Port Efficiency", type: "metric", domain: "Trade", metadata: { value: "24", unit: "Hrs", trend: "down", description: "Vessel turnaround time." } }
         ],
         links: [
           // Structural Links (India to Domains)
@@ -109,7 +120,7 @@ async function startServer() {
           { source: "India", target: "Trade", type: "measures" },
           { source: "India", target: "Energy", type: "measures" },
           { source: "India", target: "Tech", type: "measures" },
-
+          
           // Domain to Metrics
           { source: "Finance", target: "Forex Reserves", type: "measures" },
           { source: "Finance", target: "GDP Growth", type: "measures" },
@@ -117,17 +128,22 @@ async function startServer() {
           { source: "Finance", target: "Interest Rates", type: "measures" },
           { source: "Finance", target: "Debt to GDP", type: "measures" },
           { source: "Finance", target: "Stock Market Cap", type: "measures" },
+          { source: "Finance", target: "Capital Adequacy", type: "measures" },
+          { source: "Finance", target: "Fiscal Deficit", type: "measures" },
           
           { source: "Tech", target: "Semiconductors", type: "measures" },
           { source: "Tech", target: "AI Research", type: "measures" },
           { source: "Tech", target: "Digital Stack", type: "measures" },
           { source: "Tech", target: "Cyber Security", type: "measures" },
+          { source: "Tech", target: "5G Adoption", type: "measures" },
+          { source: "Tech", target: "SaaS Exports", type: "measures" },
 
           { source: "Energy", target: "Renewable Capacity", type: "measures" },
           { source: "Energy", target: "Oil Reliance", type: "measures" },
           { source: "Energy", target: "Nuclear Power", type: "measures" },
           { source: "Energy", target: "Green Hydrogen", type: "measures" },
           { source: "Energy", target: "Grid Stability", type: "measures" },
+          { source: "Energy", target: "Solar Efficiency", type: "measures" },
 
           { source: "Trade", target: "Trade Balance", type: "measures" },
           { source: "Trade", target: "FDI Inflow", type: "measures" },
@@ -136,8 +152,9 @@ async function startServer() {
           { source: "Trade", target: "Logistics Index", type: "measures" },
           { source: "Trade", target: "Export Volume", type: "measures" },
           { source: "Trade", target: "Trade Corridors", type: "measures" },
+          { source: "Trade", target: "Port Efficiency", type: "measures" },
 
-          // Countries to Domains (to show they are also in these fields)
+          // Countries to Domains
           { source: "USA", target: "Finance", type: "measures" },
           { source: "USA", target: "Tech", type: "measures" },
           { source: "USA", target: "Energy", type: "measures" },
@@ -156,7 +173,23 @@ async function startServer() {
           { source: "Japan", target: "Finance", type: "measures" },
           { source: "Japan", target: "Tech", type: "measures" },
           { source: "Japan", target: "Energy", type: "measures" },
-          { source: "Japan", target: "Trade", type: "measures" }
+          { source: "Japan", target: "Trade", type: "measures" },
+
+          { source: "UK", target: "Finance", type: "measures" },
+          { source: "UK", target: "Tech", type: "measures" },
+          { source: "UK", target: "Trade", type: "measures" },
+
+          { source: "France", target: "Energy", type: "measures" },
+          { source: "France", target: "Tech", type: "measures" },
+
+          { source: "Russia", target: "Energy", type: "measures" },
+          { source: "Russia", target: "Trade", type: "measures" },
+
+          { source: "UAE", target: "Energy", type: "measures" },
+          { source: "UAE", target: "Trade", type: "measures" },
+
+          { source: "Saudi Arabia", target: "Energy", type: "measures" },
+          { source: "Saudi Arabia", target: "Finance", type: "measures" }
         ]
       };
       fs.writeFileSync(DATA_PATH, JSON.stringify(initialData, null, 2));
